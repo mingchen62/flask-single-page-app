@@ -9,22 +9,24 @@ $(document).ready(function() {
     console.log("the form has beeen submitted");
 
     // grab values
-    valueOne = $('input[name="location"]').val();
-    valueTwo = $('input[name="language"]').val();
-    console.log(valueOne, valueTwo)
+    //valueOne = $('input[name="location"]').val();
+    //console.log(valueOne)
+    valueTwo = $("#message").val();
+    alert($("#message").val())
+    console.log(valueTwo)
 
     $.ajax({
       type: "POST",
       url: "/",
-      data : { 'first': valueOne, 'second': valueTwo },
+      dataType: 'json',
+      contentType: 'application/json',
+      data : JSON.stringify( {'story': valueTwo }),
       success: function(results) {
-        if (results.items.length > 0) {
-          $('input').hide();
+        if (results.summary.length > 0) {
+          //$('input').hide();
           $('#try-again').show();
-          var randNum = Math.floor(Math.random() * Object.keys(results.items).length)
-          console.log(results.items[randNum]);
-          $('#results').html('<a href="'+results.items[randNum].html_url+'">'+results.items[randNum].login+
-              '</a><br><img src="'+results.items[randNum].avatar_url+'" class="avatar">')
+          //console.log(results.items[randNum]);
+          $('#results').html(results.summary)
           // $('input').val('')
         } else {
           $('#results').html('Something went terribly wrong! Please try again.')
